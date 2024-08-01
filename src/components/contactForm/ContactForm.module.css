@@ -1,0 +1,18 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin-bottom: 24px;
+}
+
+.form input {
+  margin-bottom: 12px;
+}
+
+.form button {
+  margin: 0 auto;
+}
+
+.error {
+  color: red;
+}
