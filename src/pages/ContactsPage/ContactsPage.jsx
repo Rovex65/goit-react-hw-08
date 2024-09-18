@@ -1,6 +1,6 @@
+import ContactList from "../../components/contactList/ContactList";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import SearchBox from "../../components/SearchBox/SearchBox";
-import ContactList from "../../components/ContactList/ContactList";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectError, selectLoading } from "../../redux/contacts/selectors";
@@ -22,7 +22,7 @@ const ContactsPage = () => {
       .catch(() => {
         toast.error(error);
       });
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   return (
     <div>
