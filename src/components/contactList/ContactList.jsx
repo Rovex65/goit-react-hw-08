@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Contact from "../Contact/Contact";
+import ContactCard from "../ContactCard/ContactCard";
 import css from "./ContactList.module.css";
 import { selectFilteredContacts } from "../../redux/filters/selectors";
 
@@ -12,7 +12,7 @@ function ContactList() {
         <p>No Contacts</p>
       ) : (
         filteredContacts.map(({ name, number, id }) => {
-          return <Contact name={name} number={number} key={id} id={id} />;
+          return <ContactCard name={name} number={number} key={id} id={id} />;
         })
       )}
     </ul>

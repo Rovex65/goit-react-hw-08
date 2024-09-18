@@ -5,7 +5,7 @@ import { deleteContact } from "../../redux/contacts/operations";
 import toast from "react-hot-toast";
 import { selectError } from "../../redux/contacts/selectors";
 
-function Contact({ id, name, number }) {
+function ContactCard({ id, name, number }) {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
 
@@ -41,4 +41,4 @@ function Contact({ id, name, number }) {
   );
 }
 
-export default Contact;
+export default ContactCard;
