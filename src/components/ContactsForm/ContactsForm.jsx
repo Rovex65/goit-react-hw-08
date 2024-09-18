@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import css from "./ContactForm.module.css";
+import css from "./ContactsForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contacts/operations";
 import toast from "react-hot-toast";
@@ -17,7 +17,7 @@ const initialValues = {
   number: "",
 };
 
-function ContactForm() {
+function ContactsForm() {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
@@ -61,4 +61,4 @@ function ContactForm() {
   );
 }
 
-export default ContactForm;
+export default ContactsForm;
