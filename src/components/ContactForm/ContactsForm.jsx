@@ -17,7 +17,7 @@ const initialValues = {
   number: "",
 };
 
-function ContactsForm() {
+function ContactForm() {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
@@ -61,4 +61,4 @@ function ContactsForm() {
   );
 }
 
-export default ContactsForm;
+export default ContactForm;
