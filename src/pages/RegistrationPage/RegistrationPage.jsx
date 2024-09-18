@@ -5,20 +5,22 @@ import css from "./RegistrationPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/auth/operations";
 import { selectAuthError } from "../../redux/auth/selectors";
+import toast from "react-hot-toast";
 
 const RegisterValidationSchema = Yup.object().shape({
   name: Yup.string()
-    .required("Ім'я користувача є обов'язковим")
-    .min(2, "Ім'я користувача має бути мінімум в 2 символи")
-    .max(100, "Ім'я користувача має бути меншим за 100 символів"),
+    .required("Username is required")
+    .min(2, "Username must be at least 2 characters long")
+    .max(100, "Username must be less than 100 characters"),
+
   password: Yup.string()
-    .required("Пароль є обов'язковим")
-    .min(8, "Пароль має бути мінімум в 8 символи")
-    .max(100, "Пароль має бути меншим за 100 символів"),
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .max(100, "Password must be less than 100 characters"),
 
   email: Yup.string()
-    .email("Некоректна електронна адреса")
-    .required("Електронна адреса є обов'язковим"),
+    .email("Invalid email address")
+    .required("Email is required"),
 });
 
 const RegistartionPage = () => {
@@ -31,7 +33,14 @@ const RegistartionPage = () => {
   };
 
   const handleSubmit = (values) => {
-    dispatch(register(values));
+    dispatch(register(values))
+      .unwrap()
+      .then(() => {
+        toast.success("User has been registered");
+      })
+      .catch(() => {
+        toast.error(error);
+      });
   };
 
   return (
@@ -43,8 +52,8 @@ const RegistartionPage = () => {
       {({ errors }) => (
         <Form className={css.form}>
           <label className={css.label}>
-            <span>Ім&apos;я користувача:</span>
-            <Field type="text" name="name" placeholder="Кирило" />
+            <span>Name</span>
+            <Field type="text" name="name" placeholder="Alex" />
             <ErrorMessage
               className={css.errorText}
               name="name"
@@ -52,12 +61,8 @@ const RegistartionPage = () => {
             />
           </label>
           <label className={css.label}>
-            <span>Електронна адреса:</span>
-            <Field
-              type="text"
-              name="email"
-              placeholder="kirilo.example@gmail.com"
-            />
+            <span>Email</span>
+            <Field type="text" name="email" placeholder="alex@gmail.com" />
             <ErrorMessage
               className={css.errorText}
               name="email"
@@ -66,11 +71,11 @@ const RegistartionPage = () => {
           </label>
 
           <label className={css.label}>
-            <span>Пароль:</span>
+            <span>Password</span>
             <Field
               type="password"
               name="password"
-              placeholder="Введіть свій пароль"
+              placeholder="Enter your password"
             />
             <ErrorMessage
               className={css.errorText}
@@ -84,7 +89,7 @@ const RegistartionPage = () => {
             className={css.submitBtn}
             type="submit"
           >
-            Зареєструватися
+            Register
           </button>
           {error && (
             <p className={css.errorText}>Oops, some error occured... {error}</p>

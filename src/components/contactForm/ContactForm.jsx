@@ -2,8 +2,10 @@ import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import css from "./ContactForm.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contacts/operations";
+import toast from "react-hot-toast";
+import { selectError } from "../../redux/contacts/selectors";
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(3, "Too Short!").max(30, "Too Long!").required(),
@@ -19,10 +21,19 @@ function ContactForm() {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
+  const error = useSelector(selectError);
+
   const dispatch = useDispatch();
 
   const handleAddContact = (contact) => {
-    dispatch(addContact(contact));
+    dispatch(addContact(contact))
+      .unwrap()
+      .then(() => {
+        toast.success("Contact added successfully🎉");
+      })
+      .catch(() => {
+        toast.error(error);
+      });
   };
 
   const handleSubmit = (values, actions) => {

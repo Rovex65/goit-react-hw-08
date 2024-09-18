@@ -1,12 +1,11 @@
-import "./App.css";
 import { lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "../redux/contacts/operations";
-import { selectError, selectLoading } from "../redux/contacts/selectors";
 import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
 import { RestrictedRoute } from "./RestrictedRoute";
 import { Layout } from "./Layout";
+import { refreshUser } from "../redux/auth/operations";
+import { selectAuthIsRefreshing } from "../redux/auth/selectors";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const ContactsPage = lazy(() => import("../pages/ContactsPage/ContactsPage"));
@@ -18,9 +17,14 @@ const RegistrationPage = lazy(() =>
 function App() {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(fetchContacts());
-  // }, [dispatch]);
+  const isRefreshing = useSelector(selectAuthIsRefreshing);
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
+  if (isRefreshing) return <p>User is refreshing, please wait</p>;
+
   return (
     <Layout>
       <Routes>

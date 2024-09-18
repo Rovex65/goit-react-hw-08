@@ -3,30 +3,38 @@ import * as Yup from "yup";
 
 import css from "./LoginPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
-// import { apiLogin } from "../redux/auth/operations";
-// import { selectAuthError } from "../redux/auth/selectors";
+import { login } from "../../redux/auth/operations";
+import { selectAuthError } from "../../redux/auth/selectors";
+import toast from "react-hot-toast";
 
 const LoginValidationSchema = Yup.object().shape({
   password: Yup.string()
-    .required("Пароль є обов'язковим")
-    .min(8, "Пароль має бути мінімум в 8 символи")
-    .max(100, "Пароль має бути меншим за 100 символів"),
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .max(100, "Password must be less than 100 characters"),
 
   email: Yup.string()
-    .email("Некоректна електронна адреса")
-    .required("Електронна адреса є обов'язковим"),
+    .email("Invalid email address")
+    .required("Email is required"),
 });
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  //   const error = useSelector(selectAuthError);
+  const error = useSelector(selectAuthError);
   const INITIAL_VALUES = {
     email: "",
     password: "",
   };
 
   const handleSubmit = (values) => {
-    // dispatch(apiLogin(values));
+    dispatch(login(values))
+      .unwrap()
+      .then(() => {
+        toast.success("User has been logged in");
+      })
+      .catch(() => {
+        toast.error(error);
+      });
   };
 
   return (
@@ -38,7 +46,7 @@ const LoginPage = () => {
       {({ errors }) => (
         <Form className={css.form}>
           <label className={css.label}>
-            <span>Електронна адреса:</span>
+            <span>Email</span>
             <Field
               type="text"
               name="email"
@@ -52,11 +60,11 @@ const LoginPage = () => {
           </label>
 
           <label className={css.label}>
-            <span>Пароль:</span>
+            <span>Password</span>
             <Field
               type="password"
               name="password"
-              placeholder="Введіть свій пароль"
+              placeholder="Enter your password"
             />
             <ErrorMessage
               className={css.errorText}
@@ -70,12 +78,12 @@ const LoginPage = () => {
             className={css.submitBtn}
             type="submit"
           >
-            Залогінитися
+            Log In
           </button>
 
-          {/* {error && (
+          {error && (
             <p className={css.errorText}>Oops, some error occured... {error}</p>
-          )} */}
+          )}
         </Form>
       )}
     </Formik>
